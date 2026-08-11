@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Admin — Bot SaaS v3 (Claude Edition)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#333;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+h1{margin-bottom:20px;color:#1a1a1a}
+.card{background:white;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.form-group{margin-bottom:16px}
+label{display:block;font-weight:600;margin-bottom:6px;font-size:14px}
+input,textarea,select{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+textarea{min-height:80px;resize:vertical}
+button{background:#2563eb;color:white;border:none;padding:12px 24px;border-radius:8px;font-weight:600;cursor:pointer}
+button:hover{background:#1d4ed8}
+button.secondary{background:#475569}
+button.secondary:hover{background:#334155}
+button.danger{background:#dc2626}
+button.danger:hover{background:#b91c1c}
+button.small{padding:6px 12px;font-size:12px}
+.loja-row{display:grid;grid-template-columns:1fr 2fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.faq-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.password-bar{display:flex;gap:10px;margin-bottom:20px}
+.password-bar input{flex:1}
+.hidden{display:none}
+.client-item{border:1px solid #e5e5e5;border-radius:8px;padding:16px;margin-bottom:12px}
+.client-item h3{margin-bottom:8px}
+.badge{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;background:#dcfce7;color:#166534}
+.badge.trial{background:#fef3c7;color:#92400e}
+.badge.expired{background:#fee2e2;color:#991b1b}
+.badge.excedente{background:#fee2e2;color:#991b1b}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat-box{background:#f8fafc;padding:16px;border-radius:8px;text-align:center}
+.stat-box .number{font-size:24px;font-weight:700;color:#2563eb}
+.stat-box .label{font-size:12px;color:#64748b;margin-top:4px}
+.tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:10px 20px;border-radius:8px;cursor:pointer;background:white;border:1px solid #ddd}
+.tab.active{background:#2563eb;color:white;border-color:#2563eb}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.webhook-url{background:#f1f5f9;padding:10px;border-radius:6px;font-family:monospace;font-size:13px;word-break:break-all;margin-top:8px}
+.lead-item{border:1px solid #e5e5e5;border-radius:8px;padding:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.lead-item.novo{border-left:4px solid #22c55e}
+.lead-item.em_atendimento{border-left:4px solid #f59e0b}
+.lead-item.resolvido{border-left:4px solid #6b7280}
+.fin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:12px}
+.fin-box{background:#f0fdf4;padding:12px;border-radius:8px;border:1px solid #bbf7d0}
+.fin-box .number{font-size:20px;font-weight:700;color:#166534}
+.fin-box .label{font-size:12px;color:#166534;margin-top:4px}
+.fin-box.custo{background:#fef2f2;border-color:#fecaca}
+.fin-box.custo .number{color:#991b1b}
+.fin-box.custo .label{color:#991b1b}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🤖 Painel Admin — Bot SaaS v3 (Claude Edition)</h1>
+<div class="card">
+<div class="password-bar">
+<input type="password" id="adminPass" placeholder="Senha do admin">
+<button onclick="login()">Entrar</button>
+</div>
+</div>
+<div id="painel" class="hidden">
+<div class="tabs">
+<div class="tab active" onclick="showTab('novo')">+ Novo Cliente</div>
+<div class="tab" onclick="showTab('lista')">Clientes</div>
+<div class="tab" onclick="showTab('leads')">Leads</div>
+<div class="tab" onclick="showTab('stats')">Estatísticas</div>
+<div class="tab" onclick="showTab('financeiro')">💰 Análise Financeira</div>
+</div>
+
+<div id="tab-novo" class="tab-content active">
+<div class="card">
+<h2>Cadastrar Cliente</h2>
+<div class="form-group"><label>ID do Cliente</label><input type="text" id="clientId" placeholder="oticas-samir"></div>
+<div class="form-group"><label>Nome da Empresa</label><input type="text" id="nomeEmpresa" placeholder="Óticas Samir"></div>
+<div class="form-group"><label>Nome do Bot</label><input type="text" id="nomeBot" value="Ana"></div>
+<div class="form-group"><label>Z-API Instance ID</label><input type="text" id="zapiInstanceId"></div>
+<div class="form-group"><label>Z-API Token</label><input type="text" id="zapiToken"></div>
+<div class="form-group"><label>Plano</label>
+<select id="plano" onchange="preencherLimitePorPlano()">
+<option value="start">Start — R$ 900 (3.000 msgs/mês, sem relatório)</option>
+<option value="pro" selected>Pro — R$ 1.300 (8.000 msgs/mês, com relatório)</option>
+<option value="enterprise">Enterprise — R$ 2.000 (20.000 msgs/mês, com relatório)</option>
+</select>
+</div>
+<div class="form-group"><label>Limite de Mensagens/mês</label><input type="number" id="limiteMensagens" value="8000"></div>
+<div class="form-group"><label>Preço por mensagem excedente (R$)</label><input type="number" step="0.01" id="precoPorMensagemExcedente" value="0.30"></div>
+<div class="form-group"><label>Trial até (opcional)</label><input type="date" id="trialAte"></div>
+<div class="form-group"><label>Descrição</label><textarea id="descricao" placeholder="Rede de óticas com 8 filiais na região de Foz do Iguaçu..."></textarea></div>
+<div class="form-group"><label>Conhecimento</label><textarea id="conhecimento" placeholder="Informações sobre produtos, serviços, promoções..."></textarea></div>
+<div class="form-group"><label>Limites</label><textarea id="limites" placeholder="- Não dê diagnóstico médico.
+- Não negocie preços.
+- Não invente prazos."></textarea></div>
+
+<h3 style="margin:20px 0 12px">FAQ (perguntas com resposta imediata, sem custo de IA)</h3>
+<div id="faqs"></div>
+<button type="button" onclick="addFaq()" class="secondary" style="margin-bottom:20px">+ Adicionar FAQ</button>
+
+<h3 style="margin:20px 0 12px">Filiais</h3>
+<div id="lojas"></div>
+<button type="button" onclick="addLoja()" class="secondary" style="margin-bottom:20px">+ Adicionar Filial</button>
+
+<button onclick="salvarCliente()">💾 Salvar Cliente</button>
+<div class="webhook-url" id="webhookUrl" style="display:none"></div>
+</div>
+</div>
+
+<div id="tab-lista" class="tab-content">
+<div class="card"><h2>Clientes Ativos</h2><div id="listaClientes"></div></div>
+</div>
+
+<div id="tab-leads" class="tab-content">
+<div class="card">
+<h2>Leads</h2>
+<div class="form-group">
+<select id="leadClientFilter" onchange="carregarLeads()"><option value="">Selecione um cliente</option></select>
+</div>
+<div id="listaLeads"></div>
+</div>
+</div>
+
+<div id="tab-stats" class="tab-content">
+<div class="card"><h2>Estatísticas (últimos 30 dias, todos os clientes)</h2><div class="stats-grid" id="statsGrid"></div></div>
+</div>
+
+<div id="tab-financeiro" class="tab-content">
+<div class="card">
+<h2>💰 Análise Financeira por Plano</h2>
+<p style="color:#64748b;font-size:14px;margin-bottom:16px">Custos estimados com base em: IA Claude (~R$ 0,033/msg), Z-API (~R$ 75/mês), suporte (~R$ 50/mês) e infra dividida (~R$ 26/cliente).</p>
+<div id="analiseFinanceira"></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+let pass='', lojaCount=0, faqCount=0;
+const LIMITES_PLANO={start:{limite:3000,preco:0.30},pro:{limite:8000,preco:0.30},enterprise:{limite:20000,preco:0.30}};
+
+function preencherLimitePorPlano(){const p=LIMITES_PLANO[document.getElementById('plano').value];document.getElementById('limiteMensagens').value=p.limite;document.getElementById('precoPorMensagemExcedente').value=p.preco}
+
+function login(){pass=document.getElementById('adminPass').value;document.getElementById('painel').classList.remove('hidden');carregarClientes();carregarStats();carregarClientesNoFiltro();renderAnaliseFinanceira()}
+function showTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+t).classList.add('active');if(t=='lista')carregarClientes();if(t=='stats')carregarStats();if(t=='leads')carregarClientesNoFiltro();if(t=='financeiro')renderAnaliseFinanceira()}
+
+function addLoja(){lojaCount++;const d=document.createElement('div');d.className='loja-row';d.innerHTML=`<input placeholder="Nome (ex: Itaipu A)" id="loja-nome-${lojaCount}"><input placeholder="Endereço completo" id="loja-end-${lojaCount}"><input placeholder="Horário" id="loja-horario-${lojaCount}" value="Seg-Sex 08h30-18h30 | Sáb 08h30-13h"><input placeholder="WhatsApp com DDI (ex: 554530292113)" id="loja-wa-${lojaCount}">`;document.getElementById('lojas').appendChild(d)}
+
+function addFaq(){faqCount++;const d=document.createElement('div');d.className='faq-row';d.innerHTML=`<input placeholder="Pergunta (ex: Vocês fazem entrega?)" id="faq-p-${faqCount}"><input placeholder="Resposta" id="faq-r-${faqCount}">`;document.getElementById('faqs').appendChild(d)}
+
+async function salvarCliente(){const lojas={};for(let i=1;i<=lojaCount;i++){const n=document.getElementById(`loja-nome-${i}`)?.value;if(n){lojas[i]={nome:`${document.getElementById('nomeEmpresa').value} — ${n}`,endereco:document.getElementById(`loja-end-${i}`).value,horario:document.getElementById(`loja-horario-${i}`).value,whatsapp:document.getElementById(`loja-wa-${i}`).value,link:`https://wa.me/${document.getElementById(`loja-wa-${i}`).value}`}}}
+const faq=[];for(let i=1;i<=faqCount;i++){const p=document.getElementById(`faq-p-${i}`)?.value;if(p){faq.push({pergunta:p,resposta:document.getElementById(`faq-r-${i}`).value})}}
+const payload={clientId:document.getElementById('clientId').value,nomeEmpresa:document.getElementById('nomeEmpresa').value,nomeBot:document.getElementById('nomeBot').value,zapiInstanceId:document.getElementById('zapiInstanceId').value,zapiToken:document.getElementById('zapiToken').value,plano:document.getElementById('plano').value,limiteMensagens:parseInt(document.getElementById('limiteMensagens').value),precoPorMensagemExcedente:parseFloat(document.getElementById('precoPorMensagemExcedente').value),trialAte:document.getElementById('trialAte').value||null,descricao:document.getElementById('descricao').value,conhecimento:document.getElementById('conhecimento').value,limites:document.getElementById('limites').value,lojas,faq};
+const r=await fetch('/api/admin/clients',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${pass}`},body:JSON.stringify(payload)});
+const d=await r.json();if(d.success){alert('✅ Cliente salvo com sucesso!');document.getElementById('webhookUrl').style.display='block';document.getElementById('webhookUrl').innerText=`Webhook: ${window.location.origin}/webhook/${payload.clientId}`}else alert('❌ Erro: '+d.error)}
+
+async function verUso(clientId){const r=await fetch(`/api/admin/uso/${clientId}?password=${pass}`);const u=await r.json();alert(`📊 Uso do mês (${u.mes}):
+
+💬 Mensagens: ${u.mensagensEnviadas}
+⚠️ Excedentes: ${u.mensagensExcedentes}
+🔤 Tokens entrada: ${u.inputTokens}
+🔤 Tokens saída: ${u.outputTokens}
+💰 Custo de IA: R$ ${(u.custoIA||0).toFixed(2)}`)}
+
+async function carregarClientes(){const r=await fetch('/api/admin/clients?password='+pass);const c=await r.json();document.getElementById('listaClientes').innerHTML=c.map(x=>{let badge='<span class="badge">ativo</span>';if(x.trialAte){badge=new Date(x.trialAte)>new Date()?'<span class="badge trial">trial</span>':'<span class="badge expired">expirado</span>'}return`<div class="client-item"><h3>${x.nomeEmpresa} ${badge}</h3><p><strong>ID:</strong> ${x.clientId} | <strong>Plano:</strong> ${x.plano} | <strong>Limite:</strong> ${x.limiteMensagens} msgs/mês | <strong>Excedente:</strong> R$ ${(x.precoPorMensagemExcedente||0).toFixed(2)}/msg</p><p><strong>Filiais:</strong> ${Object.keys(x.lojas||{}).length} | <strong>FAQ:</strong> ${(x.faq||[]).length}</p><div class="webhook-url">${window.location.origin}/webhook/${x.clientId}</div><button class="small secondary" style="margin-top:8px" onclick="verUso('${x.clientId}')">📊 Ver uso do mês</button></div>`}).join('')}
+
+async function carregarClientesNoFiltro(){const r=await fetch('/api/admin/clients?password='+pass);const c=await r.json();const sel=document.getElementById('leadClientFilter');sel.innerHTML='<option value="">Selecione um cliente</option>'+c.map(x=>`<option value="${x.clientId}">${x.nomeEmpresa}</option>`).join('')}
+
+async function carregarLeads(){const cid=document.getElementById('leadClientFilter').value;if(!cid)return;const r=await fetch('/api/admin/leads/'+cid+'?password='+pass);const leads=await r.json();document.getElementById('listaLeads').innerHTML=leads.map(l=>`<div class="lead-item ${l.status}"><div><strong>${l.phone}</strong> — ${l.lojaNome||'Sem filial'}<br><small>${l.resumo?.substring(0,80)||''}</small></div><span class="badge" style="text-transform:uppercase">${l.status}</span></div>`).join('')||'<p>Nenhum lead encontrado.</p>'}
+
+async function carregarStats(){const r=await fetch('/api/admin/stats?password='+pass);const s=await r.json();const tm=s.reduce((a,x)=>a+(x.mensagensEnviadas||0),0);const tl=s.reduce((a,x)=>a+(x.leadsGerados||0),0);const th=s.reduce((a,x)=>a+(x.pedidosHumano||0),0);const tc=s.reduce((a,x)=>a+(x.custoIA||0),0);document.getElementById('statsGrid').innerHTML=`<div class="stat-box"><div class="number">${s.length}</div><div class="label">Dias</div></div><div class="stat-box"><div class="number">${tm}</div><div class="label">Mensagens</div></div><div class="stat-box"><div class="number">${tl}</div><div class="label">Leads</div></div><div class="stat-box"><div class="number">${th}</div><div class="label">Humanos</div></div><div class="stat-box"><div class="number">R$ ${tc.toFixed(2)}</div><div class="label">Custo IA</div></div>`}
+
+function renderAnaliseFinanceira(){
+  const dados=[
+    {nome:'Start',receita:900,msgs:3000,custo:250.00,lucro:650.00,margem:'72,2%',excedente:'R$ 0,27'},
+    {nome:'Pro',receita:1300,msgs:8000,custo:415.00,lucro:885.00,margem:'68,1%',excedente:'R$ 0,27'},
+    {nome:'Enterprise',receita:2000,msgs:20000,custo:811.00,lucro:1189.00,margem:'59,5%',excedente:'R$ 0,27'}
+  ];
+  document.getElementById('analiseFinanceira').innerHTML=dados.map(d=>`
+    <div class="client-item" style="margin-bottom:16px">
+      <h3>📦 Plano ${d.nome}</h3>
+      <div class="fin-grid">
+        <div class="fin-box"><div class="number">R$ ${d.receita.toLocaleString('pt-BR')}</div><div class="label">Receita mensal</div></div>
+        <div class="fin-box custo"><div class="number">R$ ${d.custo.toLocaleString('pt-BR')}</div><div class="label">Custo total estimado</div></div>
+        <div class="fin-box"><div class="number">R$ ${d.lucro.toLocaleString('pt-BR')}</div><div class="label">Lucro líquido</div></div>
+        <div class="fin-box"><div class="number">${d.margem}</div><div class="label">Margem de lucro</div></div>
+        <div class="fin-box"><div class="number">${d.msgs.toLocaleString('pt-BR')}</div><div class="label">Mensagens inclusas</div></div>
+        <div class="fin-box"><div class="number">R$ 0,30</div><div class="label">Preço msg excedente</div></div>
+        <div class="fin-box"><div class="number">${d.excedente}</div><div class="label">Lucro por msg excedente</div></div>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>
