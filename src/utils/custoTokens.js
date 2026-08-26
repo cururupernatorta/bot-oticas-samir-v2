@@ -1,5 +1,5 @@
-const PRECO_INPUT_POR_1K = parseFloat(process.env.PRECO_INPUT_TOKEN_1K || '0.015');
-const PRECO_OUTPUT_POR_1K = parseFloat(process.env.PRECO_OUTPUT_TOKEN_1K || '0.075');
+const PRECO_INPUT_POR_1K = parseFloat(process.env.PRECO_INPUT_TOKEN_1K || '0.010');
+const PRECO_OUTPUT_POR_1K = parseFloat(process.env.PRECO_OUTPUT_TOKEN_1K || '0.050');
 
 function calcularCusto(inputTokens = 0, outputTokens = 0) {
   const custoInput = (inputTokens / 1000) * PRECO_INPUT_POR_1K;
