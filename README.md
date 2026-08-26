@@ -33,13 +33,13 @@ Bot de atendimento inteligente usando **Claude (Anthropic)** + **Z-API** + **Mon
 
 | Plano | Receita/mês | Msgs | Custo Total* | Lucro | Margem | Excedente |
 |-------|-------------|------|--------------|-------|--------|-----------|
-| **Start** | R$ 900 | 3.000 | R$ 250 | **R$ 650** | 72,2% | R$ 0,30/msg |
-| **Pro** | R$ 1.300 | 8.000 | R$ 415 | **R$ 885** | 68,1% | R$ 0,30/msg |
-| **Enterprise** | R$ 2.000 | 20.000 | R$ 811 | **R$ 1.189** | 59,5% | R$ 0,30/msg |
+| **Start** | R$ 900 | 3.000 | R$ 196 | **R$ 704** | 78,2% | R$ 0,30/msg |
+| **Pro** | R$ 1.300 | 8.000 | R$ 271 | **R$ 1.029** | 79,2% | R$ 0,30/msg |
+| **Enterprise** | R$ 2.000 | 20.000 | R$ 451 | **R$ 1.549** | 77,5% | R$ 0,30/msg |
 
-\* Custo = IA Claude (~R$ 0,033/msg) + Z-API (~R$ 75) + Suporte (~R$ 50) + Infra dividida (~R$ 26)
+\* Custo = IA Claude (~R$ 0,015/msg) + Z-API (~R$ 75) + Suporte (~R$ 50) + Infra dividida (~R$ 26)
 
-**Lucro por msg excedente:** R$ 0,30 - R$ 0,033 = **R$ 0,27 líquido**
+**Lucro por msg excedente:** R$ 0,30 - R$ 0,015 = **R$ 0,285 líquido**
 
 ---
 
@@ -65,8 +65,8 @@ RELATORIO_HORA=9
 OWNER_ZAPI_INSTANCE_ID=
 OWNER_ZAPI_TOKEN=
 OWNER_WHATSAPP_NUMBER=5545999999999
-PRECO_INPUT_TOKEN_1K=0.015
-PRECO_OUTPUT_TOKEN_1K=0.075
+PRECO_INPUT_TOKEN_1K=0.010
+PRECO_OUTPUT_TOKEN_1K=0.050
 ```
 
 ---
