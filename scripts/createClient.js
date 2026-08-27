@@ -9,10 +9,8 @@ const ask = q => new Promise(r => rl.question(q, r));
 
 async function main() {
   await connectDB();
-  console.log('═══ CADASTRO DE CLIENTE ═══
-');
-  console.log('💡 Dica: preencha a "Ficha de Cadastro de Cliente" (Word) com o cliente e use os dados dela aqui.
-');
+  console.log('═══ CADASTRO DE CLIENTE ═══\n');
+  console.log('💡 Dica: preencha a "Ficha de Cadastro de Cliente" (Word) com o cliente e use os dados dela aqui.\n');
 
   const clientId = await ask('ID (ex: oticas-samir): ');
   const nomeEmpresa = await ask('Nome da empresa: ');
