@@ -4,6 +4,8 @@ const { connectDB } = require('./config/database');
 const { iniciarCronJobs } = require('./services/relatorioService');
 const webhookRoutes = require('./routes/webhook');
 const adminRoutes = require('./routes/admin');
+const agenteRoutes = require('./routes/agente');
+const { iniciarAgente } = require('./agente/loop');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,10 +23,12 @@ app.get('/health', (req, res) => {
 app.use('/webhook', webhookRoutes);
 app.use('/admin', adminRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/agente', agenteRoutes);
 
 async function start() {
   await connectDB();
   iniciarCronJobs();
+  iniciarAgente();
   app.listen(PORT, () => {
     console.log(`🚀 Servidor na porta ${PORT}`);
     console.log(`📊 Painel: http://localhost:${PORT}/admin`);

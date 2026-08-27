@@ -6,9 +6,13 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "create-client": "node scripts/createClient.js"
+    "create-client": "node scripts/createClient.js",
+    "test": "node tests/run.js",
+    "agente": "node scripts/agente.js"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "axios": "^1.7.0",
     "dotenv": "^16.4.0",
@@ -16,7 +20,16 @@
     "mongodb": "^6.8.0",
     "node-cron": "^3.0.3"
   },
-  "devDependencies": { "nodemon": "^3.1.0" },
-  "keywords": ["whatsapp","bot","ai","claude","saas","multi-tenant"],
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "ai",
+    "claude",
+    "saas",
+    "multi-tenant"
+  ],
   "license": "MIT"
 }
