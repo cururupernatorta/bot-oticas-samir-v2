@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.js",
     "create-client": "node scripts/createClient.js",
     "test": "node tests/run.js",
-    "agente": "node scripts/agente.js"
+    "agente": "node scripts/agente.js",
+    "texto": "node scripts/texto.js"
   },
   "engines": {
     "node": ">=18.0.0"
