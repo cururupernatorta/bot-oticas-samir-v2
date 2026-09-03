@@ -17,13 +17,18 @@ das [óticas] da região — a resposta de vocês chegou na segunda de manhã.
 Não é crítica: 8 de cada 10 que testei ficaram na mesma situação. É que
 ninguém consegue ficar no celular às 21h de sexta.
 
-Resolvi isso pra uma rede de óticas aqui perto e queria te mostrar em 10 min.
+Eu montei um sistema que resolve isso e queria te mostrar funcionando — com o
+nome da sua loja — em 20 minutos.
+
 Posso te ligar amanhã de manhã ou prefere que eu passe aí?
 ```
 
 **Por que funciona:** fato verificável, sem julgamento, normaliza o problema
-("8 de 10"), prova social local e fecha com escolha entre duas opções (nunca
-"você tem interesse?").
+("8 de 10"), oferece demonstração em vez de argumento, e fecha com escolha entre
+duas opções (nunca "você tem interesse?").
+
+> Enquanto não houver case, use a versão de piloto do
+> [documento 00](00-comecar-sem-case.md), que abre as 3 vagas de fundador.
 
 ### Variação sem Teste do Fantasma
 
@@ -45,9 +50,8 @@ vendedor. Te mostro funcionando em 10 minutos?
 ```
 "[Nome], tudo bem? [Seu nome], de [cidade]. Vou ser bem rápido, 30 segundos.
 
-Eu montei um atendimento automático de WhatsApp pra [Óticas Samir] — o sistema
-responde os clientes 24h e passa pro vendedor já com o resumo do que a pessoa
-quer.
+Eu desenvolvi um atendimento automático de WhatsApp — o sistema responde os
+clientes 24h e passa pro vendedor já com o resumo do que a pessoa quer.
 
 Liguei porque queria te fazer UMA pergunta: hoje, quando chega mensagem no
 WhatsApp de vocês às 21h de sábado, o que acontece?"
@@ -64,8 +68,7 @@ Leve: one-pager impresso e o celular com o bot rodando.
 ```
 "Oi, boa tarde! Procuro o [Nome] — sou o [Seu nome], não vou tomar seu tempo.
 
-Trabalho com atendimento automático de WhatsApp aqui pra região. Fiz o das
-Óticas Samir.
+Trabalho com atendimento automático de WhatsApp aqui pra região.
 
 Olha só isso rapidinho —" [mostra o celular, manda uma mensagem, o bot responde
 na frente dele] "— isso aqui responde 24h, sozinho, e quando o cliente está

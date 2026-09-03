@@ -3,8 +3,13 @@
 > Plataforma de atendimento automatizado 24h no WhatsApp, vendida como serviço
 > mensal para comércios e prestadores de serviço locais.
 
-Este playbook transforma o que foi construído e validado nas **Óticas Samir** em
-um produto vendável para qualquer nicho, sem reescrever o sistema para cada cliente.
+Este playbook transforma o sistema construído para as **Óticas Samir** em um
+produto vendável para qualquer nicho, sem reescrever o código para cada cliente.
+
+> ⚠️ **Comece pelo [documento 00](00-comecar-sem-case.md).** O sistema ainda não
+> foi implantado em lugar nenhum e as Óticas Samir não seguiram adiante — ou seja,
+> **não existe case**. Os documentos 01 a 10 assumem que existe um. O documento 00
+> corrige a rota e é o que vale até o primeiro cliente estar no ar.
 
 ---
 
@@ -19,6 +24,7 @@ um produto vendável para qualquer nicho, sem reescrever o sistema para cada cli
 | **Margem** | 47% a 73% no pior caso; 60% a 80% no uso real |
 | **Meta 12 meses** | 50 clientes · R$ 51,5 mil de MRR · R$ 34 mil de lucro mensal |
 | **Diferencial defensável** | Pacotes de nicho: o bot já nasce sabendo falar como ótica, clínica, pet shop ou imobiliária — inclusive o que ele **não** pode dizer |
+| **Estágio hoje** | Produto pronto e testado, **zero clientes**. A prioridade é conseguir os 3 primeiros (documento 00) |
 
 ---
 
@@ -26,6 +32,7 @@ um produto vendável para qualquer nicho, sem reescrever o sistema para cada cli
 
 | # | Documento | Para quê |
 |---|---|---|
+| **00** | **[Começar sem case](00-comecar-sem-case.md)** | **Leia primeiro: como conseguir o cliente nº 1 sem prova social** |
 | 01 | [Produto e posicionamento](01-produto-e-posicionamento.md) | O que vendemos, para quem, e a promessa exata |
 | 02 | [Nichos e priorização](02-nichos-e-priorizacao.md) | Onde atacar primeiro e por quê |
 | 03 | [Precificação e unit economics](03-precificacao-e-unit-economics.md) | Planos, margens, projeção de carteira |

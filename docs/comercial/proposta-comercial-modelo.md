@@ -63,13 +63,13 @@ houver mudança de horário, promoção ou serviço novo, e hospedagem.
 | Dia 6 | Go-live |
 | Dia 7 | Acompanhamento e primeiros resultados |
 
-### Nossa referência
+### Nossa garantia
 
-Implantamos este sistema nas **Óticas Samir**, rede com [N] filiais na região.
-O assistente atende [X] mensagens por mês, sendo [Y]% fora do horário comercial —
-mensagens que antes ficavam sem resposta até o dia seguinte.
+Você tem **30 dias para testar sem risco**: se em qualquer momento do primeiro mês
+você achar que não vale, é só avisar — cancelamos e devolvemos a mensalidade.
 
-*[Link do vídeo de depoimento]*
+*[Enquanto não houver case, esta seção substitui a de referência. Assim que o
+primeiro piloto gerar depoimento, acrescente-o aqui — sem remover a garantia.]*
 
 ### Condições
 

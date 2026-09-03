@@ -4,8 +4,13 @@ Plataforma **multi-tenant** de atendimento automatizado por WhatsApp: um servido
 N clientes, cada um com a personalidade, o conhecimento e as regras do seu próprio
 nicho.
 
-Nasceu do bot de atendimento das **Óticas Samir** e foi generalizada para ser
-vendida a qualquer comércio ou prestador de serviço, sem reescrever código por cliente.
+Nasceu do bot de atendimento escrito para as **Óticas Samir** e foi generalizada
+para ser vendida a qualquer comércio ou prestador de serviço, sem reescrever
+código por cliente.
+
+> **Estágio:** produto pronto e testado, **ainda sem clientes em produção**.
+> O plano para conseguir os três primeiros sem prova social está em
+> [`docs/comercial/00-comecar-sem-case.md`](docs/comercial/00-comecar-sem-case.md).
 
 > **Posicionamento:** recepcionista digital 24h — não vende no lugar do vendedor.
 > Responde, qualifica, encaminha para a unidade certa e entrega o contexto pronto
@@ -125,6 +130,17 @@ npm start                # painel em http://localhost:3000/admin
 **Painel:** `/admin` → escolha o nicho → os campos vêm pré-preenchidos → ajuste → salve.
 
 **CLI:** `npm run create-client`
+
+### Demonstração ao vivo, na reunião
+
+```bash
+npm run demo            # monta o bot do prospect em ~60 segundos
+npm run demo -- --limpar   # desativa as demos com trial vencido
+```
+
+Pede só nome, nicho, uma unidade e três fatos — o resto vem do pacote de nicho.
+Cria com trial de 7 dias e imprime o webhook. **Sem case para mostrar, a
+demonstração é a prova:** monte o bot dele e entregue o celular na mão dele.
 
 Depois, na Z-API do cliente: webhook `https://seu-servidor/webhook/<clientId>`,
 evento `On Message Received`.

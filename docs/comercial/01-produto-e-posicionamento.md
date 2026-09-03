@@ -73,21 +73,35 @@ uma régua de cobrança.
 O vendedor não recebe "cliente quer falar". Recebe um resumo de 5 linhas com o
 que a pessoa quer, o que já foi dito e a urgência.
 
-## Prova social: o case Óticas Samir
+## Prova social — o que você tem hoje
 
-Use como referência âncora em toda abordagem. Levante e registre os números reais:
+**Você não tem case.** O sistema foi construído para as Óticas Samir, mas nunca
+foi implantado, e eles não seguiram adiante. Qualquer afirmação de "já resolvi
+isso para uma rede da região" seria mentira — e em cidade pequena, mentira
+descoberta encerra o negócio.
+
+O que substitui a prova social enquanto ela não existe está no
+**[documento 00](00-comecar-sem-case.md)**. Em resumo:
+
+| Em vez de | Use |
+|---|---|
+| Case de terceiro | **A demonstração ao vivo** (`npm run demo`): o bot dele, com o nome dele, em 20 minutos |
+| Números de outro cliente | **O Teste do Fantasma**: os números dele, medidos por você |
+| "Funciona, confia" | **Reversão de risco**: garantia de 30 dias em toda proposta |
+| Depoimento | **Seu próprio WhatsApp** atendido pelo bot — o prospect vive o produto ao te procurar |
+
+### O que colher assim que houver o primeiro cliente
+
+Desde o dia 1 do primeiro piloto, registre para virar case no dia 30:
 
 - Mensagens atendidas por mês
 - % de mensagens fora do horário comercial
-- Leads encaminhados às filiais
+- Leads encaminhados à equipe
 - Tempo médio até a primeira resposta (antes × depois)
+- **Vídeo de 40 segundos do dono**, gravado no celular, no pico do entusiasmo
 
-> "Fizemos isso primeiro para uma rede de óticas aqui da região. Hoje o bot
-> atende [X] mensagens por mês, sendo [Y]% fora do horário — mensagens que antes
-> simplesmente ficavam sem resposta até o dia seguinte."
-
-**Peça um vídeo de 40 segundos do dono das Óticas Samir falando isso.** Vale mais
-que qualquer material de apresentação.
+Um case pequeno e específico já serve: *"412 mensagens em 30 dias, 147 fora do
+horário"* vale mais que qualquer promessa.
 
 ## Nome e marca
 

@@ -30,11 +30,13 @@ precisa salvar 20 agendamentos para justificar o mesmo valor.
 | **Clínicas odontológicas** | R$ 1.500 – R$ 15.000 de tratamento | Pro | "Cada buraco na agenda de amanhã provavelmente é uma mensagem de ontem à noite." |
 | **Clínicas de estética** | R$ 800 – R$ 8.000 em pacotes | Pro | "Você paga por cada lead de anúncio. Quanto tempo ele espera resposta?" |
 | **Materiais de construção** | R$ 500 – R$ 20.000 por orçamento | Pro | "Pedreiro manda lista de material domingo à noite. Vocês respondem quando?" |
-| **Óticas** ⭐ | R$ 350 – R$ 2.500 | Pro | Já temos case pronto e referência checável |
+| **Óticas** | R$ 350 – R$ 2.500 | Pro | O bot já está afinado para o setor — mas sem case, ver a ressalva abaixo |
 
-⭐ **Comece pelas óticas.** Você tem prova social, conhece a operação e o bot já
-está afinado para o setor. Cinco óticas em cidades vizinhas é a venda mais rápida
-que existe na sua mão hoje.
+> ⚠️ **Esta ordem só vale depois do primeiro case.** Ticket alto compra de quem
+> tem referência: imobiliária, clínica e planejados vão perguntar quem já usa, e
+> hoje a resposta é "ninguém". Enquanto não houver prova, a prioridade **inverte** —
+> rede quente antes de nicho, e negócio simples antes de ticket alto. Ver
+> **[documento 00](00-comecar-sem-case.md)**.
 
 ### 🥈 Tier B — bom volume, esforço médio
 
@@ -67,7 +69,7 @@ que existe na sua mão hoje.
 
 Não pulverize. A sequência que funciona:
 
-1. **Domine um nicho na sua cidade** (óticas em Foz do Iguaçu e região)
+1. **Domine um nicho na sua cidade** — o do seu primeiro case, qualquer que ele seja
 2. **Expanda o mesmo nicho para cidades vizinhas** — o argumento já está pronto,
    a referência é da região, e não há conflito de concorrência direta
 3. **Só então abra um segundo nicho na cidade de origem**

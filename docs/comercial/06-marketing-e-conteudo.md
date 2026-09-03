@@ -25,7 +25,7 @@ o produto inteiro sem você falar nada.
 3. **Vídeo de 60s** mostrando uma conversa real e o lead chegando no vendedor
 4. **3 blocos de dor:** mensagem à noite, atendente ocupado, cliente sem resposta
 5. **Como funciona** em 3 passos
-6. **Prova social:** case Óticas Samir com números
+6. **Prova social:** o primeiro case, assim que existir. Antes disso, deixe o bloco fora — landing com depoimento vazio ou genérico destrói credibilidade
 7. **Planos** (mostre preço — filtra curioso e gera confiança)
 8. **CTA único:** "Quero ver funcionando com o nome da minha empresa"
 
@@ -37,7 +37,8 @@ Não tente ser criador de conteúdo. Faça o mínimo que sustenta a autoridade l
 |---|---|---|
 | **Bastidor real** | 1x/semana | Print de uma conversa do bot às 2h da manhã (dados do cliente final ocultos) |
 | **Dado do setor** | 1x/semana | "Testei 30 óticas da região num sábado à noite. 24 não responderam até segunda." |
-| **Case / depoimento** | 1x/quinzena | Vídeo do cliente falando o que mudou |
+| **Case / depoimento** | 1x/quinzena | Vídeo do cliente falando o que mudou (só a partir do 1º piloto) |
+| **Construindo em público** | 1x/semana | Antes do 1º cliente: mostre o processo — "testei 30 óticas num sábado", "montei o bot de um prospect em 20 min". Transparência gera autoridade quando não há case |
 | **Educativo curto** | 1x/semana | "3 perguntas que seu WhatsApp responde 20x por dia" |
 
 **O conteúdo que mais converte é o print de conversa real.** Comerciante vê o

@@ -1,6 +1,10 @@
 # 10 — Plano de 90 dias
 
-> Um único objetivo nos primeiros 90 dias: **5 clientes pagantes e um processo de
+> ⚠️ **Este plano assume que já existe um case.** Não existe. Comece pelo
+> **[documento 00](00-comecar-sem-case.md)**, que cobre os primeiros 60 dias sem
+> prova social; volte para cá na semana 10, com o primeiro depoimento na mão.
+>
+> Um único objetivo nos 90 dias seguintes: **5 clientes pagantes e um processo de
 > venda que você sabe repetir.** Nada mais importa.
 
 ## Semana 1 — Fundação
@@ -8,8 +12,8 @@
 | Dia | Tarefa |
 |---|---|
 | Seg | Escolher o nome, registrar domínio, criar Instagram e Google Meu Negócio |
-| Ter | Levantar os números reais das Óticas Samir (mensagens/mês, % fora do horário, leads) |
-| Qua | Gravar o vídeo de depoimento com o dono das Óticas Samir (40 segundos, celular mesmo) |
+| Ter | Levantar os números reais do primeiro piloto (mensagens/mês, % fora do horário, leads) |
+| Qua | Gravar o vídeo de depoimento com o dono do primeiro piloto (40 segundos, celular mesmo) |
 | Qui | Montar a landing page de 1 página e o one-pager em PDF |
 | Sex | **Colocar o próprio bot para atender o seu WhatsApp comercial** |
 | Sáb | Montar a lista de 100 óticas num raio de 150 km (Google Maps) |
@@ -83,7 +87,7 @@ Escalar antes disso multiplica problema, não receita.
 
 **Ficar mexendo no produto em vez de vender.**
 
-O sistema já funciona — está rodando nas Óticas Samir. Todo dia gasto "melhorando
+O sistema já funciona e está testado. Todo dia gasto "melhorando
 o bot" antes de ter 5 clientes é um dia sem aprender o que o mercado realmente
 quer pagar. As melhorias certas só aparecem depois do terceiro cliente reclamar
 da mesma coisa.
