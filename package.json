@@ -1,14 +1,18 @@
 {
-  "name": "bot-saas-claude",
-  "version": "3.1.0",
-  "description": "Bot WhatsApp multi-tenant — Claude (Anthropic) + Z-API + MongoDB + Relatórios + Limites por plano",
+  "name": "atende24-plataforma",
+  "version": "4.0.0",
+  "description": "Plataforma multi-tenant de atendimento automatizado 24h no WhatsApp, com pacotes de nicho customizáveis",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "create-client": "node scripts/createClient.js"
+    "create-client": "node scripts/createClient.js",
+    "smoke": "node tests/smoke.js",
+    "test": "node tests/smoke.js"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "dependencies": {
     "axios": "^1.7.0",
     "dotenv": "^16.4.0",
@@ -16,7 +20,18 @@
     "mongodb": "^6.8.0",
     "node-cron": "^3.0.3"
   },
-  "devDependencies": { "nodemon": "^3.1.0" },
-  "keywords": ["whatsapp","bot","ai","claude","saas","multi-tenant"],
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "keywords": [
+    "whatsapp",
+    "bot",
+    "ia",
+    "claude",
+    "saas",
+    "multi-tenant",
+    "atendimento",
+    "nichos"
+  ],
   "license": "MIT"
 }

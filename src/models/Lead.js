@@ -5,6 +5,8 @@ async function criarLead(clientId, phone, lojaKey, lojaNome, resumo, historico) 
   return await getDB().collection(COL).insertOne({
     clientId, phone, lojaKey, lojaNome, resumo, historico,
     status: 'novo',
+    alertas: 0,
+    ultimoAlerta: null,
     atendente: null,
     assumidoEm: null,
     resolvidoEm: null,
@@ -25,13 +27,27 @@ async function listarLeads(clientId, status) {
   return await getDB().collection(COL).find(filtro).sort({ criadoEm: -1 }).limit(100).toArray();
 }
 
-async function leadNaoRespondido(clientId, minutos = 30) {
+/**
+ * Leads ainda não assumidos, elegíveis para alerta.
+ * Alerta no máximo `maxAlertas` vezes, respeitando o intervalo — antes disso
+ * o mesmo lead era re-alertado a cada rodada do cron, para sempre.
+ */
+async function leadNaoRespondido(clientId, minutos = 30, maxAlertas = 2) {
   const limite = new Date(Date.now() - minutos * 60 * 1000);
   return await getDB().collection(COL).find({
     clientId,
     status: 'novo',
-    criadoEm: { $lt: limite }
+    criadoEm: { $lt: limite },
+    alertas: { $lt: maxAlertas },
+    $or: [{ ultimoAlerta: null }, { ultimoAlerta: { $exists: false } }, { ultimoAlerta: { $lt: limite } }]
   }).toArray();
 }
 
-module.exports = { criarLead, assumirLead, listarLeads, leadNaoRespondido };
+async function registrarAlerta(leadId) {
+  await getDB().collection(COL).updateOne(
+    { _id: leadId },
+    { $inc: { alertas: 1 }, $set: { ultimoAlerta: new Date() } }
+  );
+}
+
+module.exports = { criarLead, assumirLead, listarLeads, leadNaoRespondido, registrarAlerta };

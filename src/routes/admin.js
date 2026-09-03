@@ -5,7 +5,8 @@ const { getDB } = require('../config/database');
 const { listClients, createClient, deleteClient, updateClient } = require('../models/Client');
 const { listarLeads } = require('../models/Lead');
 const { getUsoMes, listarFaturasPendentes } = require('../models/Uso');
-const { PLANOS } = require('../config/planos');
+const { PLANOS, getAnaliseFinanceira } = require('../config/planos');
+const { listarNichos, sugestoesDoNicho } = require('../config/nichos');
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
@@ -20,6 +21,15 @@ router.get('/', (req, res) => {
 });
 
 router.get('/planos', auth, (req, res) => res.json(PLANOS));
+
+router.get('/planos/analise', auth, (req, res) => {
+  res.json(Object.keys(PLANOS).map(id => ({ id, ...PLANOS[id], ...getAnaliseFinanceira(id) })));
+});
+
+// ── Pacotes de nicho ─────────────────────────────────────────────────────────
+router.get('/nichos', auth, (req, res) => res.json(listarNichos()));
+
+router.get('/nichos/:id', auth, (req, res) => res.json(sugestoesDoNicho(req.params.id)));
 
 router.get('/clients', auth, async (req, res) => {
   try { res.json(await listClients()); }

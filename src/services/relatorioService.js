@@ -47,9 +47,11 @@ async function enviarRelatoriosSemanaisClientes() {
       if (stats.length === 0) continue;
 
       const msg = formatarRelatorioCliente(stats, c);
-      const primeiraLoja = Object.values(c.lojas || {})[0];
-      if (primeiraLoja?.whatsapp) {
-        await enviarWhatsApp(c.zapiInstanceId, c.zapiToken, primeiraLoja.whatsapp, msg);
+      const destino = c.whatsappGestor || Object.values(c.lojas || {})[0]?.whatsapp;
+      if (destino) {
+        await enviarWhatsApp(c.zapiInstanceId, c.zapiToken, destino, msg);
+      } else {
+        console.warn(`[CRON] ${c.clientId} sem whatsappGestor nem unidade — relatório não enviado.`);
       }
     } catch (err) {
       console.error(`[CRON ERRO] ${c.clientId}:`, err.message);
@@ -92,7 +94,7 @@ async function enviarRelatorioSemanalAdmin() {
       : '';
 
     linhas.push(
-`🏢 *${c.nomeEmpresa}* (${c.plano})
+`🏢 *${c.nomeEmpresa}* (${c.plano} · ${c.nicho || 'generico'})
 💬 Mensagens na semana: ${msgs}
 🔤 Tokens: ${inTok.toLocaleString('pt-BR')} entrada + ${outTok.toLocaleString('pt-BR')} saída
 💰 Custo de IA na semana: R$ ${custo.toFixed(2)}${excedenteAviso}`
@@ -130,18 +132,21 @@ async function fecharFaturamentoMensal() {
 }
 
 async function verificarLeadsNaoRespondidos() {
-  const { leadNaoRespondido } = require('../models/Lead');
+  const { leadNaoRespondido, registrarAlerta } = require('../models/Lead');
   const clientes = await listClients();
 
   for (const c of clientes) {
     try {
       const leads = await leadNaoRespondido(c.clientId, 30);
       for (const lead of leads) {
-        const loja = c.lojas[lead.lojaKey];
-        if (loja?.whatsapp) {
-          const msg = `⏰ *LEAD AGUARDANDO — ${c.nomeEmpresa}*\n\n👤 ${lead.phone}\n📋 ${lead.resumo?.substring(0, 100) || 'Ver detalhes'}\n\n⚠️ Este lead foi enviado há mais de 30 minutos e ainda não foi atendido.`;
-          await enviarWhatsApp(c.zapiInstanceId, c.zapiToken, loja.whatsapp, msg);
-        }
+        const loja = (c.lojas || {})[lead.lojaKey];
+        const destino = loja?.whatsapp || c.whatsappGestor;
+        if (!destino) continue;
+
+        const segundoAviso = (lead.alertas || 0) >= 1;
+        const msg = `⏰ *LEAD AGUARDANDO — ${c.nomeEmpresa}*\n\n👤 ${lead.phone}\n📍 ${lead.lojaNome || 'sem unidade'}\n📋 ${lead.resumo?.substring(0, 140) || 'Ver detalhes no painel'}\n\n${segundoAviso ? '🔴 *SEGUNDO AVISO* — este cliente está esperando há mais de 1 hora.' : '⚠️ Enviado há mais de 30 minutos e ainda não foi assumido.'}`;
+        await enviarWhatsApp(c.zapiInstanceId, c.zapiToken, destino, msg);
+        await registrarAlerta(lead._id);
       }
     } catch (err) {
       console.error(`[CRON LEAD] ${c.clientId}:`, err.message);

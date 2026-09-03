@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel Admin — Bot SaaS v3 (Claude Edition)</title>
+<title>Painel Admin — Atende24</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f5f5;color:#333;padding:20px}
@@ -21,7 +21,11 @@ button.secondary:hover{background:#334155}
 button.danger{background:#dc2626}
 button.danger:hover{background:#b91c1c}
 button.small{padding:6px 12px;font-size:12px}
-.loja-row{display:grid;grid-template-columns:1fr 2fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.loja-row{border:1px solid #e5e5e5;border-radius:8px;padding:12px;margin-bottom:10px;background:#fafafa}
+.loja-row .linha{display:grid;grid-template-columns:1fr 2fr 1.2fr;gap:8px;margin-bottom:8px}
+.loja-row .linha-hora{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.hint{font-size:12px;color:#64748b;margin-top:4px}
+.nicho-info{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;margin-top:8px;font-size:13px;color:#1e3a8a;display:none}
 .faq-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
 .password-bar{display:flex;gap:10px;margin-bottom:20px}
 .password-bar input{flex:1}
@@ -57,7 +61,7 @@ button.small{padding:6px 12px;font-size:12px}
 </head>
 <body>
 <div class="container">
-<h1>🤖 Painel Admin — Bot SaaS v3 (Claude Edition)</h1>
+<h1>🤖 Painel Admin — Atende24</h1>
 <div class="card">
 <div class="password-bar">
 <input type="password" id="adminPass" placeholder="Senha do admin">
@@ -76,9 +80,23 @@ button.small{padding:6px 12px;font-size:12px}
 <div id="tab-novo" class="tab-content active">
 <div class="card">
 <h2>Cadastrar Cliente</h2>
-<div class="form-group"><label>ID do Cliente</label><input type="text" id="clientId" placeholder="oticas-samir"></div>
-<div class="form-group"><label>Nome da Empresa</label><input type="text" id="nomeEmpresa" placeholder="Óticas Samir"></div>
+<div class="form-group"><label>ID do Cliente</label><input type="text" id="clientId" placeholder="minha-empresa"></div>
+<div class="form-group"><label>Nome da Empresa</label><input type="text" id="nomeEmpresa" placeholder="Nome da Empresa"></div>
+<div class="form-group"><label>Nicho do negócio</label>
+<select id="nicho" onchange="aplicarNicho()"></select>
+<div class="hint">O nicho pré-preenche bot, conhecimento, regras de compliance, FAQ e roteiro de qualificação. Tudo é editável depois.</div>
+<div class="nicho-info" id="nichoInfo"></div>
+</div>
 <div class="form-group"><label>Nome do Bot</label><input type="text" id="nomeBot" value="Ana"></div>
+<div class="form-group"><label>Fuso horário</label>
+<select id="fusoHorario">
+<option value="America/Sao_Paulo" selected>America/Sao_Paulo (Brasília)</option>
+<option value="America/Manaus">America/Manaus (AM/RO/RR)</option>
+<option value="America/Cuiaba">America/Cuiaba (MT/MS)</option>
+<option value="America/Belem">America/Belem (PA/AP)</option>
+<option value="America/Rio_Branco">America/Rio_Branco (AC)</option>
+<option value="America/Noronha">America/Noronha</option>
+</select></div>
 <div class="form-group"><label>Z-API Instance ID</label><input type="text" id="zapiInstanceId"></div>
 <div class="form-group"><label>Z-API Token</label><input type="text" id="zapiToken"></div>
 <div class="form-group"><label>Plano</label>
@@ -91,11 +109,15 @@ button.small{padding:6px 12px;font-size:12px}
 <div class="form-group"><label>Limite de Mensagens/mês</label><input type="number" id="limiteMensagens" value="8000"></div>
 <div class="form-group"><label>Preço por mensagem excedente (R$)</label><input type="number" step="0.01" id="precoPorMensagemExcedente" value="0.30"></div>
 <div class="form-group"><label>Trial até (opcional)</label><input type="date" id="trialAte"></div>
-<div class="form-group"><label>Descrição</label><textarea id="descricao" placeholder="Rede de óticas com 8 filiais na região de Foz do Iguaçu..."></textarea></div>
+<div class="form-group"><label>Descrição</label><textarea id="descricao" ></textarea></div>
 <div class="form-group"><label>Conhecimento</label><textarea id="conhecimento" placeholder="Informações sobre produtos, serviços, promoções..."></textarea></div>
 <div class="form-group"><label>Limites</label><textarea id="limites" placeholder="- Não dê diagnóstico médico.
 - Não negocie preços.
 - Não invente prazos."></textarea></div>
+
+<div class="form-group"><label>Roteiro de qualificação (o que o bot precisa descobrir)</label>
+<textarea id="qualificacao" placeholder="Um item por linha: campo | pergunta"></textarea>
+<div class="hint">Formato: <code>campo | o que descobrir</code>. Um por linha. Vem do nicho e pode ser ajustado por cliente.</div></div>
 
 <h3 style="margin:20px 0 12px">FAQ (perguntas com resposta imediata, sem custo de IA)</h3>
 <div id="faqs"></div>
@@ -140,21 +162,90 @@ button.small{padding:6px 12px;font-size:12px}
 </div>
 
 <script>
-let pass='', lojaCount=0, faqCount=0;
-const LIMITES_PLANO={start:{limite:3000,preco:0.30},pro:{limite:8000,preco:0.30},enterprise:{limite:20000,preco:0.30}};
+let pass='', lojaCount=0, faqCount=0, PLANOS={};
 
-function preencherLimitePorPlano(){const p=LIMITES_PLANO[document.getElementById('plano').value];document.getElementById('limiteMensagens').value=p.limite;document.getElementById('precoPorMensagemExcedente').value=p.preco}
+async function carregarPlanos(){
+  const r=await fetch('/api/admin/planos?password='+pass);
+  if(!r.ok)return;
+  PLANOS=await r.json();
+  document.getElementById('plano').innerHTML=Object.entries(PLANOS).map(([id,p])=>
+    `<option value="${id}"${id==='pro'?' selected':''}>${p.nome} — R$ ${p.precoMensal} (${p.limiteMensagens.toLocaleString('pt-BR')} msgs/mês)</option>`).join('');
+}
 
-function login(){pass=document.getElementById('adminPass').value;document.getElementById('painel').classList.remove('hidden');carregarClientes();carregarStats();carregarClientesNoFiltro();renderAnaliseFinanceira()}
+function preencherLimitePorPlano(){const p=PLANOS[document.getElementById('plano').value];if(!p)return;
+  document.getElementById('limiteMensagens').value=p.limiteMensagens;
+  document.getElementById('precoPorMensagemExcedente').value=p.precoPorMensagemExcedente}
+
+let NICHOS=[];
+async function login(){pass=document.getElementById('adminPass').value;document.getElementById('painel').classList.remove('hidden');await carregarPlanos();await carregarNichos();carregarClientes();carregarStats();carregarClientesNoFiltro();renderAnaliseFinanceira()}
+
+async function carregarNichos(){
+  const r=await fetch('/api/admin/nichos?password='+pass);
+  if(!r.ok){alert('Senha incorreta ou servidor indisponível.');return}
+  NICHOS=await r.json();
+  document.getElementById('nicho').innerHTML=NICHOS.map(n=>`<option value="${n.id}">${n.emoji} ${n.nome}</option>`).join('');
+  aplicarNicho();
+}
+
+async function aplicarNicho(){
+  const id=document.getElementById('nicho').value;
+  if(!id)return;
+  const r=await fetch(`/api/admin/nichos/${id}?password=${pass}`);
+  const n=await r.json();
+  document.getElementById('nomeBot').value=n.nomeBot||'Ana';
+  document.getElementById('descricao').value=n.descricao||'';
+  document.getElementById('conhecimento').value=n.conhecimento||'';
+  document.getElementById('limites').value=n.limites||'';
+  document.getElementById('qualificacao').value=(n.qualificacao||[]).map(q=>`${q.campo} | ${q.pergunta}`).join('\n');
+  document.getElementById('faqs').innerHTML='';faqCount=0;
+  (n.faq||[]).forEach(f=>addFaq(f));
+  const meta=NICHOS.find(x=>x.id===id)||{};
+  if(meta.planoSugerido)document.getElementById('plano').value=meta.planoSugerido;
+  preencherLimitePorPlano();
+  const box=document.getElementById('nichoInfo');
+  box.style.display='block';
+  box.innerHTML=`<strong>Plano sugerido:</strong> ${meta.planoSugerido||'-'} &nbsp;|&nbsp; <strong>Volume típico:</strong> ${meta.volumeMensagensMes||'-'} msgs/mês<br><strong>Dor principal:</strong> ${meta.dorPrincipal||'-'}<br><strong>KPIs:</strong> ${(n.kpis||[]).join(' · ')}`;
+}
 function showTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));event.target.classList.add('active');document.getElementById('tab-'+t).classList.add('active');if(t=='lista')carregarClientes();if(t=='stats')carregarStats();if(t=='leads')carregarClientesNoFiltro();if(t=='financeiro')renderAnaliseFinanceira()}
 
-function addLoja(){lojaCount++;const d=document.createElement('div');d.className='loja-row';d.innerHTML=`<input placeholder="Nome (ex: Itaipu A)" id="loja-nome-${lojaCount}"><input placeholder="Endereço completo" id="loja-end-${lojaCount}"><input placeholder="Horário" id="loja-horario-${lojaCount}" value="Seg-Sex 08h30-18h30 | Sáb 08h30-13h"><input placeholder="WhatsApp com DDI (ex: 554530292113)" id="loja-wa-${lojaCount}">`;document.getElementById('lojas').appendChild(d)}
+function addLoja(){lojaCount++;const i=lojaCount;const d=document.createElement('div');d.className='loja-row';d.innerHTML=`
+<div class="linha">
+  <input placeholder="Nome da unidade" id="loja-nome-${i}">
+  <input placeholder="Endereço completo" id="loja-end-${i}">
+  <input placeholder="WhatsApp com DDI (5545999999999)" id="loja-wa-${i}">
+</div>
+<div class="linha-hora">
+  <input placeholder="Seg a Sex — 08:30-18:30" id="loja-h-semana-${i}" value="08:30-18:30">
+  <input placeholder="Sábado — 08:30-13:00" id="loja-h-sab-${i}" value="08:30-13:00">
+  <input placeholder="Domingo — vazio = fechado" id="loja-h-dom-${i}">
+</div>
+<div class="hint">Deixe o campo vazio para "fechado". Aceita dois turnos: <code>08:00-12:00, 14:00-18:00</code></div>`;
+document.getElementById('lojas').appendChild(d)}
 
-function addFaq(){faqCount++;const d=document.createElement('div');d.className='faq-row';d.innerHTML=`<input placeholder="Pergunta (ex: Vocês fazem entrega?)" id="faq-p-${faqCount}"><input placeholder="Resposta" id="faq-r-${faqCount}">`;document.getElementById('faqs').appendChild(d)}
+function parseFaixaCliente(txt){
+  if(!txt||!txt.trim())return null;
+  const partes=txt.split(',').map(p=>p.trim()).filter(Boolean);
+  const faixas=partes.map(p=>{const m=p.match(/(\d{1,2}[:h.]?\d{0,2})\s*(?:-|–|as|às|até)\s*(\d{1,2}[:h.]?\d{0,2})/i);
+    if(!m)return null;const n=v=>{v=v.replace(/[h.]/,':');if(!v.includes(':'))v=v+':00';const[a,b]=v.split(':');return String(a).padStart(2,'0')+':'+String(b||'00').padStart(2,'0')};
+    return{inicio:n(m[1]),fim:n(m[2])}}).filter(Boolean);
+  return faixas.length?faixas:null;
+}
 
-async function salvarCliente(){const lojas={};for(let i=1;i<=lojaCount;i++){const n=document.getElementById(`loja-nome-${i}`)?.value;if(n){lojas[i]={nome:`${document.getElementById('nomeEmpresa').value} — ${n}`,endereco:document.getElementById(`loja-end-${i}`).value,horario:document.getElementById(`loja-horario-${i}`).value,whatsapp:document.getElementById(`loja-wa-${i}`).value,link:`https://wa.me/${document.getElementById(`loja-wa-${i}`).value}`}}}
-const faq=[];for(let i=1;i<=faqCount;i++){const p=document.getElementById(`faq-p-${i}`)?.value;if(p){faq.push({pergunta:p,resposta:document.getElementById(`faq-r-${i}`).value})}}
-const payload={clientId:document.getElementById('clientId').value,nomeEmpresa:document.getElementById('nomeEmpresa').value,nomeBot:document.getElementById('nomeBot').value,zapiInstanceId:document.getElementById('zapiInstanceId').value,zapiToken:document.getElementById('zapiToken').value,plano:document.getElementById('plano').value,limiteMensagens:parseInt(document.getElementById('limiteMensagens').value),precoPorMensagemExcedente:parseFloat(document.getElementById('precoPorMensagemExcedente').value),trialAte:document.getElementById('trialAte').value||null,descricao:document.getElementById('descricao').value,conhecimento:document.getElementById('conhecimento').value,limites:document.getElementById('limites').value,lojas,faq};
+function addFaq(valores){faqCount++;const i=faqCount;const v=valores||{};const d=document.createElement('div');d.className='faq-row';d.innerHTML=`<input placeholder="Pergunta" id="faq-p-${i}"><input placeholder="Resposta" id="faq-r-${i}"><input placeholder="Palavras-chave separadas por vírgula" id="faq-k-${i}" style="grid-column:1/-1">`;document.getElementById('faqs').appendChild(d);
+if(v.pergunta)document.getElementById(`faq-p-${i}`).value=v.pergunta;
+if(v.resposta)document.getElementById(`faq-r-${i}`).value=v.resposta;
+if(v.palavrasChave)document.getElementById(`faq-k-${i}`).value=v.palavrasChave.join(', ');}
+
+async function salvarCliente(){const lojas={};for(let i=1;i<=lojaCount;i++){const n=document.getElementById(`loja-nome-${i}`)?.value;if(!n)continue;
+const semana=parseFaixaCliente(document.getElementById(`loja-h-semana-${i}`).value);
+const sab=parseFaixaCliente(document.getElementById(`loja-h-sab-${i}`).value);
+const dom=parseFaixaCliente(document.getElementById(`loja-h-dom-${i}`).value);
+const wa=document.getElementById(`loja-wa-${i}`).value;
+lojas[i]={nome:n,endereco:document.getElementById(`loja-end-${i}`).value,whatsapp:wa,link:`https://wa.me/${wa}`,
+  horarios:{seg:semana||[],ter:semana||[],qua:semana||[],qui:semana||[],sex:semana||[],sab:sab||[],dom:dom||[]}};}
+const faq=[];for(let i=1;i<=faqCount;i++){const p=document.getElementById(`faq-p-${i}`)?.value;if(p){faq.push({pergunta:p,resposta:document.getElementById(`faq-r-${i}`).value,palavrasChave:(document.getElementById(`faq-k-${i}`)?.value||'').split(',').map(x=>x.trim()).filter(Boolean)})}}
+const qualificacao=document.getElementById('qualificacao').value.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const[c,...r]=l.split('|');return{campo:(c||'').trim(),pergunta:r.join('|').trim()||c.trim()}});
+const payload={clientId:document.getElementById('clientId').value,nomeEmpresa:document.getElementById('nomeEmpresa').value,nomeBot:document.getElementById('nomeBot').value,nicho:document.getElementById('nicho').value,fusoHorario:document.getElementById('fusoHorario').value,qualificacao,zapiInstanceId:document.getElementById('zapiInstanceId').value,zapiToken:document.getElementById('zapiToken').value,plano:document.getElementById('plano').value,limiteMensagens:parseInt(document.getElementById('limiteMensagens').value),precoPorMensagemExcedente:parseFloat(document.getElementById('precoPorMensagemExcedente').value),trialAte:document.getElementById('trialAte').value||null,descricao:document.getElementById('descricao').value,conhecimento:document.getElementById('conhecimento').value,limites:document.getElementById('limites').value,lojas,faq};
 const r=await fetch('/api/admin/clients',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${pass}`},body:JSON.stringify(payload)});
 const d=await r.json();if(d.success){alert('✅ Cliente salvo com sucesso!');document.getElementById('webhookUrl').style.display='block';document.getElementById('webhookUrl').innerText=`Webhook: ${window.location.origin}/webhook/${payload.clientId}`}else alert('❌ Erro: '+d.error)}
 
@@ -174,12 +265,10 @@ async function carregarLeads(){const cid=document.getElementById('leadClientFilt
 
 async function carregarStats(){const r=await fetch('/api/admin/stats?password='+pass);const s=await r.json();const tm=s.reduce((a,x)=>a+(x.mensagensEnviadas||0),0);const tl=s.reduce((a,x)=>a+(x.leadsGerados||0),0);const th=s.reduce((a,x)=>a+(x.pedidosHumano||0),0);const tc=s.reduce((a,x)=>a+(x.custoIA||0),0);document.getElementById('statsGrid').innerHTML=`<div class="stat-box"><div class="number">${s.length}</div><div class="label">Dias</div></div><div class="stat-box"><div class="number">${tm}</div><div class="label">Mensagens</div></div><div class="stat-box"><div class="number">${tl}</div><div class="label">Leads</div></div><div class="stat-box"><div class="number">${th}</div><div class="label">Humanos</div></div><div class="stat-box"><div class="number">R$ ${tc.toFixed(2)}</div><div class="label">Custo IA</div></div>`}
 
-function renderAnaliseFinanceira(){
-  const dados=[
-    {nome:'Start',receita:900,msgs:3000,custo:250.00,lucro:650.00,margem:'72,2%',excedente:'R$ 0,27'},
-    {nome:'Pro',receita:1300,msgs:8000,custo:415.00,lucro:885.00,margem:'68,1%',excedente:'R$ 0,27'},
-    {nome:'Enterprise',receita:2000,msgs:20000,custo:811.00,lucro:1189.00,margem:'59,5%',excedente:'R$ 0,27'}
-  ];
+async function renderAnaliseFinanceira(){
+  const r=await fetch('/api/admin/planos/analise?password='+pass);
+  if(!r.ok)return;
+  const dados=(await r.json()).map(p=>({nome:p.nome,receita:p.receita,msgs:p.limiteMensagens,custo:parseFloat(p.custoTotal),lucro:parseFloat(p.lucro),margem:p.margem,excedente:'R$ '+p.lucroPorExcedente,precoExcedente:p.precoPorMensagemExcedente}));
   document.getElementById('analiseFinanceira').innerHTML=dados.map(d=>`
     <div class="client-item" style="margin-bottom:16px">
       <h3>📦 Plano ${d.nome}</h3>
@@ -189,7 +278,7 @@ function renderAnaliseFinanceira(){
         <div class="fin-box"><div class="number">R$ ${d.lucro.toLocaleString('pt-BR')}</div><div class="label">Lucro líquido</div></div>
         <div class="fin-box"><div class="number">${d.margem}</div><div class="label">Margem de lucro</div></div>
         <div class="fin-box"><div class="number">${d.msgs.toLocaleString('pt-BR')}</div><div class="label">Mensagens inclusas</div></div>
-        <div class="fin-box"><div class="number">R$ 0,30</div><div class="label">Preço msg excedente</div></div>
+        <div class="fin-box"><div class="number">R$ ${d.precoExcedente.toFixed(2)}</div><div class="label">Preço msg excedente</div></div>
         <div class="fin-box"><div class="number">${d.excedente}</div><div class="label">Lucro por msg excedente</div></div>
       </div>
     </div>
