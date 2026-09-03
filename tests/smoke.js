@@ -31,7 +31,7 @@ require.cache[require.resolve('../src/services/claudeService')] = {
 
 const { montarDocumento } = require('../src/models/Client');
 const { processarMensagem, processarBotao, montarButtonId } = require('../src/services/botService');
-const { gerarSystemPrompt } = require('../src/utils/systemPrompt');
+const { gerarSystemPrompt, gerarContextoAtual } = require('../src/utils/systemPrompt');
 const { listarNichos } = require('../src/config/nichos');
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -91,8 +91,8 @@ async function cenarioOdonto() {
   ok('prompt usa o vocabulário do nicho (pacientes)', gerarSystemPrompt(cliente).includes('Você atende pacientes'));
   ok('prompt traz os guardrails de saúde', gerarSystemPrompt(cliente).includes('PROIBIDO dar diagnóstico'));
   ok('unidade com todos os dias vazios é tratada como fechada',
-     /Status: FECHADA agora/.test(gerarSystemPrompt(cliente)),
-     gerarSystemPrompt(cliente).split('\n').find(l => l.includes('Status:')) || '');
+     /FECHADA agora/.test(gerarContextoAtual(cliente)),
+     gerarContextoAtual(cliente));
 
   respostasIA = ['Sinto muito pela dor. Vou acionar nossa equipe agora. [HUMANO]'];
   await processarMensagem(cliente, msg('estou com muita dor de dente'));
@@ -119,11 +119,68 @@ function cenarioTodosNichos() {
   ok(`${listarNichos().length} nichos geram prompt completo`, quebrados.length === 0, quebrados.join(', '));
 }
 
+// ── Cenário 4: o system prompt precisa ser byte-idêntico entre requisições ──
+// Esta é a falha mais cara e mais silenciosa do caching: um campo dinâmico
+// entra no prefixo, o cache passa a errar em 100% das mensagens, nada quebra
+// e a conta triplica sem aviso. Ver docs/CUSTOS.md.
+function cenarioCacheEstavel() {
+  console.log('\n▶ Estabilidade do prefixo cacheado');
+  const cliente = montarDocumento({
+    clientId: 'cache-test', nomeEmpresa: 'Empresa Cache', nicho: 'otica',
+    lojas: { 1: { nome: 'Unidade 1', horarios: { seg: [{ inicio: '08:00', fim: '18:00' }] } } }
+  });
+
+  const a = gerarSystemPrompt(cliente);
+  const b = gerarSystemPrompt(cliente);
+  ok('duas gerações produzem bytes idênticos', a === b);
+
+  // Teste de verdade: gerar o prompt em momentos diferentes do dia e da semana.
+  // Se algum campo volátil escapar para o prefixo, os bytes divergem — sem
+  // precisar adivinhar por regex o que é volátil.
+  const DataReal = Date;
+  const viajarPara = iso => {
+    global.Date = class extends DataReal {
+      constructor(...args) { return args.length ? new DataReal(...args) : new DataReal(iso); }
+      static now() { return new DataReal(iso).getTime(); }
+    };
+  };
+
+  const momentos = [
+    '2026-09-07T11:00:00-03:00', // segunda de manhã, loja aberta
+    '2026-09-07T21:30:00-03:00', // segunda à noite, loja fechada
+    '2026-09-13T15:00:00-03:00', // domingo à tarde
+    '2026-12-25T03:00:00-03:00'  // feriado de madrugada
+  ];
+  const versoes = momentos.map(m => { viajarPara(m); return gerarSystemPrompt(cliente); });
+  global.Date = DataReal;
+
+  const divergentes = versoes.filter(v => v !== versoes[0]).length;
+  ok('prefixo idêntico em 4 momentos diferentes do dia/semana', divergentes === 0,
+     `${divergentes} de ${versoes.length} divergiram — há conteúdo volátil no system prompt`);
+
+  // E o contexto volátil precisa, ao contrário, MUDAR com o horário
+  viajarPara(momentos[0]); const ctxAberto = gerarContextoAtual(cliente);
+  viajarPara(momentos[1]); const ctxFechado = gerarContextoAtual(cliente);
+  global.Date = DataReal;
+  ok('contexto volátil acompanha o horário real', ctxAberto !== ctxFechado &&
+     /ABERTA/.test(ctxAberto) && /FECHADA/.test(ctxFechado));
+
+  // O volátil precisa existir — só que no lugar certo
+  const ctx = gerarContextoAtual(cliente);
+  ok('contexto volátil é gerado separadamente', /Agora é/.test(ctx) && /(ABERTA|FECHADA)/.test(ctx));
+
+  // Tamanho mínimo para o cache do Claude Sonnet 5 funcionar (1.024 tokens)
+  const tokensAprox = Math.round(a.length / 3.6);
+  ok(`prefixo passa do mínimo cacheável (~${tokensAprox} tokens > 1.024)`, tokensAprox > 1024,
+     `só ${tokensAprox} tokens — abaixo do mínimo o cache é ignorado silenciosamente`);
+}
+
 (async () => {
   console.log('═══ SMOKE TEST — Plataforma de Atendimento 24h ═══');
   await cenarioPetshop();
   await cenarioOdonto();
   cenarioTodosNichos();
+  cenarioCacheEstavel();
   console.log(`\n${falhas === 0 ? '✅' : '❌'} ${testes - falhas}/${testes} verificações passaram`);
   process.exit(falhas === 0 ? 0 : 1);
 })();

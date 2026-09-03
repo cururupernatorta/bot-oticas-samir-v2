@@ -1,7 +1,7 @@
 const { getDB } = require('../config/database');
 const { enviarWhatsApp, enviarBotao } = require('./zapiService');
 const { chamarClaude, gerarResumoLead } = require('./claudeService');
-const { gerarSystemPrompt } = require('../utils/systemPrompt');
+const { gerarSystemPrompt, gerarContextoAtual } = require('../utils/systemPrompt');
 const { buscarFaq } = require('../utils/faq');
 const { criarLead, assumirLead } = require('../models/Lead');
 const { registrarMensagem, registrarTokens } = require('../models/Uso');
@@ -79,7 +79,7 @@ async function registrarAtendimento(cliente, usage = null) {
   }
 
   if (usage) {
-    const custo = calcularCusto(usage.input_tokens, usage.output_tokens);
+    const custo = calcularCusto(usage);
     await incrementStatsCampo(clientId, 'inputTokens', usage.input_tokens || 0);
     await incrementStatsCampo(clientId, 'outputTokens', usage.output_tokens || 0);
     await incrementStatsCampo(clientId, 'custoIA', custo);
@@ -168,9 +168,18 @@ async function processarMensagem(cliente, body) {
   let history = (session.history || []).concat({ role: 'user', content: message });
   if (history.length > MAX_HISTORY) history = history.slice(-MAX_HISTORY);
 
+  // O histórico guardado fica limpo. O contexto volátil (que unidade está
+  // aberta agora, data/hora) entra só na ÚLTIMA mensagem, depois do breakpoint
+  // de cache — assim ele muda a cada requisição sem invalidar o prefixo.
+  const paraEnvio = history.map((h, i) =>
+    i === history.length - 1 && h.role === 'user'
+      ? { role: 'user', content: `${gerarContextoAtual(cliente)}\n\n${h.content}` }
+      : h
+  );
+
   let rawReply, usage;
   try {
-    const resposta = await chamarClaude(gerarSystemPrompt(cliente), history);
+    const resposta = await chamarClaude(gerarSystemPrompt(cliente), paraEnvio);
     rawReply = resposta.texto;
     usage = resposta.usage;
   } catch (err) {
@@ -265,7 +274,7 @@ async function notificarEquipe(cliente, phone, unidadeKey, unidade, history) {
   try {
     const { texto: resumo, usage } = await gerarResumoLead(cliente, historicoTexto);
     if (usage) {
-      const custo = calcularCusto(usage.input_tokens, usage.output_tokens);
+      const custo = calcularCusto(usage);
       await incrementStatsCampo(clientId, 'inputTokens', usage.input_tokens || 0);
       await incrementStatsCampo(clientId, 'outputTokens', usage.output_tokens || 0);
       await incrementStatsCampo(clientId, 'custoIA', custo);

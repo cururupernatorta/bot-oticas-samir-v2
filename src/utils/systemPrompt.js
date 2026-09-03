@@ -35,12 +35,14 @@ function gerarSystemPrompt(cliente = {}) {
     ? cliente.gatilhosHumano
     : nicho.gatilhosHumano || [];
 
+  // ATENÇÃO: este bloco precisa ser 100% ESTÁVEL. Nada de status ao vivo,
+  // data, hora ou qualquer coisa que mude entre requisições — o system prompt
+  // é o prefixo cacheado, e um único byte diferente invalida o cache inteiro.
+  // O que está aberto AGORA vai em gerarContextoAtual(), depois do breakpoint.
   const listaUnidades = Object.entries(unidades).map(([k, u]) => {
-    const aberta = estaAberta(u, cliente) ? 'ABERTA agora' : `FECHADA agora (reabre ${proximaAbertura(u, cliente)})`;
     const partes = [`${k}) ${u.nome}`];
     if (u.endereco) partes.push(`   Endereço: ${u.endereco}`);
     partes.push(`   Horário: ${descreverHorario(u, cliente)}`);
-    partes.push(`   Status: ${aberta}`);
     if (u.observacao) partes.push(`   Obs.: ${u.observacao}`);
     return partes.join('\n');
   }).join('\n');
@@ -86,7 +88,10 @@ mensagem, em linha separada e invisível ao cliente: [LEAD_PRONTO]
 ${listaUnidades || 'Nenhuma unidade cadastrada — não invente endereços nem horários.'}
 
 Quando a pessoa escolher uma, confirme em linguagem natural e acrescente (invisível): [UNIDADE:NUMERO]
-Se a unidade escolhida estiver FECHADA agora, acrescente também: [AVISO_HORARIO]
+
+O que está aberto NESTE MOMENTO chega a você em cada mensagem, dentro de um bloco
+<contexto_atual>. Use sempre esse bloco para falar de "agora" — nunca deduza pelo horário acima.
+Se a unidade escolhida estiver fechada segundo o <contexto_atual>, acrescente: [AVISO_HORARIO]
 
 # QUANDO CHAMAR UM HUMANO
 Acrescente (invisível) [HUMANO] se acontecer qualquer um destes casos:
@@ -111,6 +116,31 @@ Os marcadores entre colchetes vão sempre na última linha e nunca são comentad
 `.trim();
 }
 
+/**
+ * CONTEXTO VOLÁTIL — vai no FIM da conversa, nunca no system prompt.
+ *
+ * Tudo que muda ao longo do dia (que unidade está aberta, data e hora) fica aqui.
+ * Como entra depois do breakpoint de cache, mudar de minuto em minuto não
+ * invalida nada do prefixo cacheado.
+ */
+function gerarContextoAtual(cliente = {}) {
+  const unidades = cliente.lojas || cliente.unidades || {};
+  const agora = new Date().toLocaleString('pt-BR', {
+    timeZone: cliente.fusoHorario || 'America/Sao_Paulo',
+    weekday: 'long', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
+  });
+
+  const linhas = Object.entries(unidades).map(([k, u]) => {
+    if (estaAberta(u, cliente)) return `${k}) ${u.nome}: ABERTA agora`;
+    return `${k}) ${u.nome}: FECHADA agora — reabre ${proximaAbertura(u, cliente)}`;
+  });
+
+  return `<contexto_atual>
+Agora é ${agora}.
+${linhas.join('\n') || 'Nenhuma unidade cadastrada.'}
+</contexto_atual>`;
+}
+
 /** Prompt do resumo entregue ao time humano — também sensível ao nicho. */
 function gerarPromptResumo(cliente = {}, historicoTexto = '') {
   const nicho = getNicho(cliente.nicho);
@@ -132,4 +162,4 @@ CONVERSA:
 ${historicoTexto}`;
 }
 
-module.exports = { gerarSystemPrompt, gerarPromptResumo };
+module.exports = { gerarSystemPrompt, gerarContextoAtual, gerarPromptResumo };

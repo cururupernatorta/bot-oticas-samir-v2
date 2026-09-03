@@ -14,6 +14,9 @@ vendida a qualquer comércio ou prestador de serviço, sem reescrever código po
 📘 **O plano comercial completo** (marketing, prospecção, nichos, precificação,
 scripts, contrato) está em **[`docs/comercial/`](docs/comercial/README.md)**.
 
+💰 **A apuração de custos** (WAME API, servidor, IA com cache) está em
+**[`docs/CUSTOS.md`](docs/CUSTOS.md)** — e é reproduzível com `npm run custos`.
+
 ---
 
 ## O que mudou na v4 (Plataforma)
@@ -28,6 +31,8 @@ scripts, contrato) está em **[`docs/comercial/`](docs/comercial/README.md)**.
 | `buttonId` quebrava se o `clientId` tivesse `_` | Separador seguro, com retrocompatibilidade |
 | Falha de IA deixava o cliente sem resposta e ninguém sabia | Retry com backoff + alerta para a equipe |
 | Sem testes | Smoke test end-to-end (`npm test`) |
+| Sem prompt caching, e com status ao vivo dentro do prompt | Cache do system prompt (−66% no custo de IA) com trava de regressão no teste |
+| Banco sem nenhum índice; conversas crescendo sem limite | Índices criados no boot + TTL de 60 dias |
 
 ---
 
@@ -127,6 +132,23 @@ evento `On Message Received`.
 ⚠️ Após o cadastro, **substitua todos os `[preencher]`** da base de conhecimento e
 das FAQs por conteúdo real. Campo `[preencher]` é ignorado pelo bot de propósito —
 melhor não responder do que responder um template.
+
+## Custos
+
+Um servidor (VPS 4 vCPU / 8 GB, ~R$ 75/mês) atende **10 clientes** com ~20× de folga —
+o limite de 10 é de risco e suporte, não de capacidade.
+
+| Item | Custo | Observação |
+|---|---|---|
+| IA por mensagem | **R$ 0,006** | com cache ligado; R$ 0,018 sem |
+| Canal WhatsApp (WAME API) | R$ 29/cliente | instância dedicada, msgs ilimitadas |
+| Servidor | R$ 7,50/cliente | R$ 75 ÷ 10 clientes |
+
+```bash
+npm run custos                    # modelo completo, todos os cenários
+npm run custos -- --ttl 5m        # comparar TTL de cache
+npm run custos -- --cambio 6.20   # estressar o câmbio
+```
 
 ## Planos
 

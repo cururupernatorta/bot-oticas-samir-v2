@@ -2,14 +2,18 @@
  * PLANOS — fonte única de verdade (produto + comercial).
  *
  * ═══════════════════════════════════════════════════════════════════════════
- * PREMISSAS DE CUSTO (revisar a cada 6 meses ou quando um fornecedor mudar)
+ * PREMISSAS DE CUSTO — revisadas com preços reais (ver docs/CUSTOS.md)
  * ═══════════════════════════════════════════════════════════════════════════
- *  • IA: ~R$ 0,033 por mensagem (≈600 tokens entrada + 180 saída)
- *  • Z-API: ~R$ 75/mês por instância (1 instância por cliente)
+ *  • IA: ~R$ 0,006 por mensagem com prompt caching ligado.
+ *    Sem cache seriam ~R$ 0,018. O modelo detalhado está em scripts/custos.js
+ *    (`npm run custos`) — este arquivo só guarda a média para o painel.
+ *  • Canal WhatsApp (WAME API): ~R$ 29/mês por instância, mensagens ilimitadas.
  *  • Suporte humano: R$ 25 a R$ 60/mês por cliente, conforme o plano
- *  • Infra compartilhada (Render + Mongo + domínio + monitoramento): ~R$ 130/mês
- *    dividida entre os clientes ativos — a premissa abaixo é de 5 clientes.
- *    Com 20 clientes esse rateio cai para ~R$ 6,50 e a margem sobe sozinha.
+ *  • Servidor: ~R$ 75/mês (VPS 4 vCPU / 8 GB + backup), até 10 clientes.
+ *    A premissa abaixo é de 10 clientes por servidor → R$ 7,50 cada.
+ *
+ *  ⚠️ Estes são custos de OPERAÇÃO. Imposto, gateway, inadimplência e contador
+ *  ficam fora daqui e comem mais uns 13% do MRR — `npm run custos` mostra.
  *
  * O plano ESSENCIAL existe porque o piso de R$ 900 fechava a porta para
  * barbearia, pet shop, assistência técnica e oficina pequena — que são
@@ -97,9 +101,10 @@ const PLANOS = {
   }
 };
 
-const CUSTO_IA_POR_MSG = 0.033;
-const CUSTO_ZAPI = 75;
-const CUSTO_INFRA_MENSAL = 130;
+const CUSTO_IA_POR_MSG = 0.006;     // com prompt caching; sem cache: 0.018
+const CUSTO_CANAL = 29;             // WAME API, por instância/mês
+const CUSTO_INFRA_MENSAL = 75;      // servidor + backup
+const CLIENTES_POR_SERVIDOR = 10;
 
 function getPlano(planoId) {
   return PLANOS[planoId] || PLANOS.pro;
@@ -110,12 +115,12 @@ function getPlano(planoId) {
  * @param {number} clientesAtivos  para ratear a infra fixa (padrão: 5)
  * @param {number} ocupacao        % do limite realmente consumido (padrão: 1 = pior caso)
  */
-function getAnaliseFinanceira(planoId, clientesAtivos = 5, ocupacao = 1) {
+function getAnaliseFinanceira(planoId, clientesAtivos = CLIENTES_POR_SERVIDOR, ocupacao = 1) {
   const plano = getPlano(planoId);
 
   const custoIa = plano.limiteMensagens * ocupacao * CUSTO_IA_POR_MSG;
   const custoInfra = CUSTO_INFRA_MENSAL / Math.max(1, clientesAtivos);
-  const custoTotal = custoIa + CUSTO_ZAPI + plano.custoSuporte + custoInfra;
+  const custoTotal = custoIa + CUSTO_CANAL + plano.custoSuporte + custoInfra;
   const lucro = plano.precoMensal - custoTotal;
 
   return {
@@ -124,7 +129,7 @@ function getAnaliseFinanceira(planoId, clientesAtivos = 5, ocupacao = 1) {
     limiteMensagens: plano.limiteMensagens,
     precoPorMensagemExcedente: plano.precoPorMensagemExcedente,
     custoIa: custoIa.toFixed(2),
-    custoZapi: CUSTO_ZAPI,
+    custoCanal: CUSTO_CANAL,
     custoSuporte: plano.custoSuporte,
     custoInfra: custoInfra.toFixed(2),
     custoTotal: custoTotal.toFixed(2),
@@ -158,5 +163,5 @@ function projetarCarteira(mix = {}) {
 
 module.exports = {
   PLANOS, getPlano, getAnaliseFinanceira, projetarCarteira,
-  CUSTO_IA_POR_MSG, CUSTO_ZAPI, CUSTO_INFRA_MENSAL
+  CUSTO_IA_POR_MSG, CUSTO_CANAL, CUSTO_INFRA_MENSAL, CLIENTES_POR_SERVIDOR
 };
