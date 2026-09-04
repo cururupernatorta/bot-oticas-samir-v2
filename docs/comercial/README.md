@@ -44,7 +44,9 @@ produto vendável para qualquer nicho, sem reescrever o código para cada client
 | 09 | [Contrato, LGPD e riscos](09-contrato-lgpd-e-riscos.md) | O que precisa estar no papel |
 | 10 | [Plano de 90 dias](10-plano-90-dias.md) | O que fazer amanhã de manhã |
 | — | [Ficha de diagnóstico](ficha-diagnostico.md) | Formulário de descoberta e onboarding |
-| — | [Modelo de proposta](proposta-comercial-modelo.md) | Proposta pronta para preencher |
+| — | [Proposta de teste — Óticas Samir](proposta-teste-samir.md) | Memorando interno: pedido de teste de 30 dias, sem preço |
+| — | [Proposta — Piloto Fundador](proposta-piloto-fundador.md) | Proposta comercial para os 3 primeiros clientes |
+| — | [Modelo de proposta](proposta-comercial-modelo.md) | Proposta padrão, para depois que houver case |
 
 ---
 
