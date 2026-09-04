@@ -32,7 +32,13 @@ precisa salvar 20 agendamentos para justificar o mesmo valor.
 | **Materiais de construção** | R$ 500 – R$ 20.000 por orçamento | Pro | "Pedreiro manda lista de material domingo à noite. Vocês respondem quando?" |
 | **Óticas** | R$ 350 – R$ 2.500 | Pro | O bot já está afinado para o setor — mas sem case, ver a ressalva abaixo |
 
-> ⚠️ **Esta ordem só vale depois do primeiro case.** Ticket alto compra de quem
+> ⛔ **Óticas estão fora da lista por enquanto.** Você trabalha nas Óticas Samir.
+> Vender atendimento automatizado para ótica concorrente na mesma região é motivo
+> de justa causa e pode configurar concorrência desleal. Elas voltam para a mesa
+> quando você sair de lá, ou com autorização expressa do dono. Ver
+> **[documento 00](00-comecar-sem-case.md)** → "Antes de vender qualquer coisa".
+
+> ⚠️ **E esta ordem só vale depois do primeiro case.** Ticket alto compra de quem
 > tem referência: imobiliária, clínica e planejados vão perguntar quem já usa, e
 > hoje a resposta é "ninguém". Enquanto não houver prova, a prioridade **inverte** —
 > rede quente antes de nicho, e negócio simples antes de ticket alto. Ver
@@ -58,6 +64,7 @@ precisa salvar 20 agendamentos para justificar o mesmo valor.
 
 ### ⛔ Evitar por enquanto
 
+- **Óticas da sua região** — conflito direto com seu emprego atual (ver acima)
 - **Farmácias e qualquer coisa que toque prescrição** — risco regulatório alto
 - **Financeiro / crédito / consórcio** — regulação Bacen, risco de promessa indevida
 - **Saúde com telemedicina** — exige conformidade que ainda não temos

@@ -23,7 +23,7 @@ duas continuam inteiras, e a segunda é a mais forte das três.
 
 ---
 
-## Os quatro ativos que você tem hoje
+## Os cinco ativos que você tem hoje
 
 Nenhum deles depende de histórico.
 
@@ -49,7 +49,14 @@ funcionando com o próprio nome na tela vence um depoimento de terceiro** — po
 o dono não precisa acreditar em você, ele está vendo.
 
 **4. O seu próprio WhatsApp.**
-Custa zero e é o único case que você pode ter hoje. Ver a seção seguinte.
+Custa zero e é a prova mais rápida que você pode montar. Ver a seção seguinte.
+
+**5. Você trabalha dentro de um comércio do setor.**
+Isso é raro e é subestimado. Você vê o WhatsApp de uma loja real funcionando todo
+dia, pode medir o problema com números de verdade antes de falar com qualquer
+prospect, e tem salário — o que significa que a fase zero não precisa dar
+resultado no mês 1. Também traz um conflito a resolver: ver a seção
+"Antes de vender qualquer coisa".
 
 ---
 
@@ -74,45 +81,146 @@ fazem: preço, prazo de implantação, se funciona para o nicho dele.
 
 ---
 
-## Fase 0.5 — A conversa com a Samir vale mais que a venda
+## Fase 0.5 — Você trabalha lá. Isso muda tudo.
 
-Eles não estão interessados. **Não insista para vender. Insista para entender.**
+A Samir não é um prospect. É onde você trabalha. Isso significa que a maior parte
+do que se escreve sobre "primeira venda" não se aplica a você — para melhor e
+para pior.
 
-Você está prestes a abordar dezenas de comércios com um discurso que nunca foi
-testado em ninguém. A Samir é a única empresa que já ouviu a proposta e disse não
-— isso é o dado mais valioso que você tem hoje, e está de graça.
+### Por que eles não parecem interessados (provavelmente não é o produto)
 
-Peça 15 minutos, deixando claro que **não é para vender**:
+Vender para o próprio empregador é a venda mais difícil que existe, e o motivo
+raramente é o produto:
 
-> "Não vim insistir, o assunto morreu do meu lado. Só queria te pedir 10 minutos
-> de sinceridade, porque vou oferecer isso para outros comércios e prefiro
-> descobrir com você o que está errado."
+- **Você não é fornecedor, é o funcionário.** A mesma proposta vinda de uma
+  empresa de fora teria outro peso. É o santo de casa que não faz milagre, e é
+  quase universal.
+- **Ninguém quer ser cobaia de um projeto do funcionário.** Se der errado, o
+  problema é da loja; se der certo, o funcionário vai embora vender para os outros.
+  O dono sente isso mesmo sem verbalizar.
+- **Eles não estão avaliando um produto. Estão avaliando um pedido seu.** É
+  diferente, e por isso a resposta é morna em vez de um "não" com motivo.
 
-Roteiro:
+Repare que nada disso é sobre o bot funcionar ou não.
 
-1. Quando eu te apresentei, o que passou pela sua cabeça primeiro?
-2. Foi o preço, foi não acreditar que funciona, ou foi não ser um problema seu?
-3. Vocês acham que perdem venda por mensagem sem resposta? Por quê?
-4. Se fosse de graça, você usaria? *(Se a resposta for não, o problema não é preço.)*
-5. Se fosse metade do preço, você compraria? *(Se sim, o problema é preço. Se não, é confiança ou a dor.)*
-6. O que teria que ser verdade para você comprar?
-7. Você conhece alguém que sofre mais com isso que vocês?
+### Pare de pedir para comprar. Peça para testar.
 
-**Anote as palavras exatas dele.** As objeções reais do doc 05 vão ser reescritas
-com base nessa conversa — as que estão lá hoje são as previsíveis, não as medidas.
+**Esta é a mudança mais importante do plano inteiro.**
 
-**Pergunta 7 é a mais importante.** Ela transforma um "não" em uma indicação, e
-indicação é o que abre a Fase 1.
+Você vinha fazendo uma pergunta de compra: orçamento, decisão, contrato, risco.
+Troque por uma pergunta de experimento:
 
-### O que NÃO fazer
+> "Deixa eu ligar isso em **uma filial só**, por 30 dias, sem custo nenhum pra
+> loja. Eu cuido de tudo. No fim eu te mostro quantas mensagens chegaram fora do
+> horário e quantas viraram atendimento. Se não prestar, eu desligo e não se fala
+> mais nisso."
 
-**Não ofereça de graça para eles mudarem de ideia.** Um cliente desinteressado é
-o pior primeiro cliente possível: não treina a equipe, não usa o botão de assumir,
-não dá feedback, não vira depoimento — e no fim você tem uma implantação fracassada
-como seu único case. É pior do que não ter case nenhum.
+O que muda com essa formulação:
 
-E não queime a relação. Daqui a seis meses, com três cases na mão, essa conversa
-é outra.
+| Pedido de compra | Pedido de teste |
+|---|---|
+| Precisa de verba | Custa zero para eles |
+| Precisa de decisão | Precisa só de permissão |
+| Risco é deles | Risco é seu |
+| Compromisso indefinido | Acaba em 30 dias, com data |
+| Ele avalia você | Ele avalia números |
+
+Um dono de loja diz "não" para uma compra com muito mais facilidade do que para
+um teste de 30 dias que não custa nada e que o funcionário vai tocar sozinho.
+
+**Uma filial, não a rede.** Escolha a filial cujo gerente está mais incomodado com
+o WhatsApp — e converse com ele antes de falar com o dono. Um gerente pedindo
+junto vale mais que qualquer argumento seu. Rede inteira de uma vez é onboarding
+complexo, equipe não treinada e uma chance grande de o teste falhar por operação,
+não por produto.
+
+### O que você já tem e nenhum concorrente tem
+
+Você trabalha dentro de um comércio real, do setor, todo dia. Comece a **medir
+hoje** — não precisa de bot, precisa de uma planilha e uma semana:
+
+| O que medir | Como |
+|---|---|
+| Mensagens recebidas por dia | Contagem simples, uma semana |
+| Quantas chegam depois do horário e no fim de semana | Marque o horário de cada uma |
+| Quanto tempo até a primeira resposta | Diferença entre chegada e resposta |
+| Quantas ficam sem resposta nenhuma | O número que dói |
+| As 10 perguntas mais repetidas | Isso vira o FAQ e economiza IA |
+
+Isso te dá duas coisas de valor imediato:
+
+1. **O argumento do teste**, com número da própria loja: *"em uma semana chegaram
+   84 mensagens, 31 fora do horário, e 12 ficaram sem resposta."* É bem mais forte
+   que qualquer proposta.
+2. **Conhecimento de setor que você pode usar na rua** — você passa a saber como
+   funciona o WhatsApp de uma ótica de verdade, e isso aparece na conversa com
+   qualquer comerciante.
+
+> ⚠️ **Peça autorização por escrito antes de usar qualquer número da Samir fora
+> dali** — em proposta, em post, em conversa de venda. Medir para melhorar o
+> trabalho é uma coisa; usar dado da empresa para vender o seu produto é outra, e
+> a diferença entre as duas é a autorização. Um e-mail ou mensagem do dono dizendo
+> "pode usar" resolve.
+
+### Se mesmo assim for não
+
+Aceite rápido e siga. **Não insista, não reapresente, não tente de novo em duas
+semanas.** Você trabalha lá — desgastar essa relação custa muito mais caro que o
+case vale.
+
+Nesse caso, seu primeiro case vem de fora, e o resto deste documento vale
+integralmente. E daqui a seis meses, com três clientes pagando e resultado na mão,
+a conversa com a Samir é outra — aí você é fornecedor, não funcionário.
+
+---
+
+## Antes de vender qualquer coisa: resolva o conflito
+
+Você é funcionário de uma ótica e está prestes a vender software para o comércio
+da região. Três pontos precisam estar resolvidos, e é melhor resolver agora do que
+depois que houver dinheiro envolvido.
+
+### 1. De quem é o código
+
+Se você escreveu em horário de trabalho, com equipamento da empresa, ou como
+tarefa atribuída, é bem possível que a empresa tenha direitos sobre ele — a CLT e
+a Lei de Software tratam disso. Se escreveu fora do expediente, por conta própria,
+sem relação com a sua função, o código tende a ser seu.
+
+**Não resolva isso por dedução.** Duas ações concretas:
+- Releia seu contrato de trabalho procurando cláusula de propriedade intelectual,
+  invenções ou confidencialidade.
+- Se houver qualquer ambiguidade, alinhe por escrito com o dono antes de faturar
+  o primeiro cliente. Uma mensagem de "esse projeto é meu, fiz fora do trabalho"
+  confirmada por ele vale muito.
+
+Uma hora de advogado trabalhista resolve as duas. Custa pouco e evita o cenário
+em que o negócio cresce e a empresa reivindica participação.
+
+### 2. Não venda para as óticas da região
+
+Isto é uma correção direta ao [documento 02](02-nichos-e-priorizacao.md), que
+manda começar pelas óticas.
+
+**Enquanto você trabalhar na Samir, óticas concorrentes estão fora.** Vender
+atendimento automatizado para o concorrente do seu empregador, na mesma cidade,
+é motivo de demissão por justa causa e pode configurar concorrência desleal — e
+mesmo que não desse problema jurídico, acabaria com a sua relação lá no dia em
+que descobrissem.
+
+Comece por qualquer outro nicho: pet shop, oficina, barbearia, assistência técnica,
+odontologia. Todos estão prontos no sistema. Óticas voltam para a mesa quando você
+sair da Samir, ou com autorização expressa deles.
+
+### 3. Tempo e atenção
+
+Você tem salário — o que é uma vantagem enorme: a fase zero custa R$ 255/mês e
+você não depende dela para pagar contas. Mas onboarding e suporte acontecem em
+horário comercial, que é justamente quando você está trabalhando.
+
+Seja realista com o número de pilotos: **três é o teto** enquanto você tiver
+emprego. Prefira clientes perto de você e do tipo que aceita conversar no fim do
+dia. E não prometa SLA de horário comercial que você não consegue cumprir.
 
 ---
 
@@ -173,7 +281,7 @@ Nesta fase, **rede quente antes de nicho**. Em ordem:
 
 1. **Quem você já conhece** — cliente de outro serviço seu, amigo dono de comércio,
    parente, ex-colega. Faça a lista de 20 nomes hoje.
-2. **Indicação da conversa com a Samir** (pergunta 7)
+2. **Indicações de dentro da Samir** — fornecedores, representantes e clientes da loja que também são donos de comércio
 3. **Seu bairro** — comércio onde você já é cliente e já conhece o dono pelo nome
 4. **Teste do Fantasma** com 30 empresas, para os que não vieram das três acima
 
@@ -248,6 +356,23 @@ Um case não aparece sozinho. Ele é construído de propósito, desde o dia 1.
 | **Dia 45** | Publicar o primeiro case |
 | **Dia 60** | Converter para pago no preço fundador + pedir a indicação combinada |
 
+### Se o primeiro case for a Samir, declare a relação
+
+Se o teste de 30 dias na filial acontecer e virar seu primeiro case, **diga que
+você trabalha lá.** Sempre, sem ser perguntado:
+
+> "Esse é o resultado da ótica onde eu trabalho — foi onde eu consegui testar
+> primeiro. Não é cliente pagante, é implantação real com números reais."
+
+Duas razões. A primeira é que o prospect vai descontar um depoimento de empregador
+de qualquer jeito, e omitir só faz você parecer desonesto quando ele descobrir —
+em cidade pequena, ele descobre. A segunda é que declarar aumenta a credibilidade
+do resto: quem é transparente sobre a fraqueza do próprio case ganha o benefício
+da dúvida no que afirma.
+
+Um case interno declarado vale bem mais que nenhum case. Só não vale tanto quanto
+um cliente pagante — por isso ele não substitui os três pilotos da Fase 1.
+
 ### O case pequeno já serve
 
 Você não precisa de números grandes. Precisa de números **reais e específicos**:
@@ -287,7 +412,8 @@ Meta não é faturamento. Nos primeiros 60 dias, é isto:
 | Marco | Prazo |
 |---|---|
 | Bot rodando no seu próprio WhatsApp | Dia 7 |
-| Conversa de diagnóstico com a Samir feita e anotada | Dia 10 |
+| Uma semana de medição do WhatsApp da loja, na planilha | Dia 7 |
+| Pedido de teste de 30 dias em uma filial feito ao dono | Dia 10 |
 | Lista de 20 nomes da rede quente | Dia 10 |
 | 3 pilotos assinados | Dia 30 |
 | 3 pilotos no ar e funcionando | Dia 40 |
@@ -304,6 +430,7 @@ propósito — você está comprando prova, e prova é o insumo mais caro que fa
 | Dar tudo de graça | Cliente sem custo não engaja, não vira depoimento, e ainda te ensina errado |
 | Escolher o cliente grande demais | Onboarding complexo + você inexperiente = primeiro case ruim |
 | Insistir com quem já disse não | Consome semanas e produz um cliente que cancela no mês 2 |
+| Vender para ótica concorrente enquanto trabalha na Samir | Justa causa, e acaba com a relação que te sustenta hoje |
 | Esperar o produto ficar "pronto" | Ele já está. O que falta é cliente, e cliente não aparece no código |
 | Inventar referência | Cidade pequena. Descobriram, acabou |
 | Sair vendendo antes de colocar no próprio WhatsApp | Você vende 24h com um número que não responde à noite |
@@ -313,8 +440,9 @@ propósito — você está comprando prova, e prova é o insumo mais caro que fa
 ## Resumo em uma página
 
 1. **Semana 1** — bot no seu próprio WhatsApp. Lista de 20 nomes da rede quente.
-2. **Semana 1** — conversa de diagnóstico com a Samir. Não para vender: para
-   entender por que o não, e para pedir uma indicação.
+2. **Semana 1** — meça o WhatsApp da própria loja por uma semana. Depois peça
+   para **testar 30 dias em uma filial**, sem custo — não peça para comprar.
+   E resolva antes: de quem é o código, e nada de vender para ótica concorrente.
 3. **Semanas 2–5** — Piloto Fundador: 3 vagas, R$ 297 de implantação, 60 dias sem
    mensalidade, 40% travado depois. Rede quente primeiro, negócio simples,
    dono engajado.
